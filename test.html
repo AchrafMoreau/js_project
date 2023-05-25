@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Spring 4</title>
+  </head>//from  w w w .j av  a 2  s .c  o  m
+  <body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <aside>Move mouse on canvas element.</aside>
+    <script>
+class Ball {
+  constructor() {
+    this.x = 0;
+    this.y = 0;
+    this.radius = 5;
+    this.vx = 0;
+    this.vy = 0;
+   // this.rotation = 0;
+   // this.scaleX = 1;
+    //this.scaleY = 1;
+    this.color = 'blue';
+    this.lineWidth = 1;
+  }
+
+  draw(context) {
+    context.save();
+    context.translate(this.x, this.y);
+ //   context.rotate(this.rotation);
+   // context.scale(this.scaleX, this.scaleY);
+    
+   // context.lineWidth = this.lineWidth;
+    context.fillStyle = this.color;
+    context.beginPath();
+    //x, y, radius, start_angle, end_angle, anti-clockwise
+    context.arc(0, 0, this.radius, 0, Math.PI * 2, true);
+    context.closePath();
+    context.fill();
+    context.restore();
+  }
+
+  
+}
+captureMouse = function (element) {
+  var mouse = {x: 0, y: 0, event: null},
+      body_scrollLeft = document.body.scrollLeft,
+      element_scrollLeft = document.documentElement.scrollLeft,
+      body_scrollTop = document.body.scrollTop,
+      element_scrollTop = document.documentElement.scrollTop,
+      offsetLeft = element.offsetLeft,
+      offsetTop = element.offsetTop;
+  
+  
+  element.addEventListener('mousemove', function (event) {
+    var x, y;
+    if (event.pageX || event.pageY) {
+      x = event.pageX;
+      y = event.pageY;
+    } else {
+      x = event.clientX + body_scrollLeft + element_scrollLeft;
+      y = event.clientY + body_scrollTop + element_scrollTop;
+    }
+    x -= offsetLeft;
+    y -= offsetTop;
+    
+    mouse.x = x;
+    mouse.y = y;
+    mouse.event = event;
+  }, false);
+  
+  return mouse;
+};  
+    window.onload = function () {
+      var canvas = document.getElementById('canvas'),
+          context = canvas.getContext('2d'),
+          mouse = captureMouse(canvas),
+          ball = new Ball(),
+          spring = 0.5,
+          friction = 0.2,
+          vx = 0,
+          vy = 0;
+      (function drawFrame () {
+        window.requestAnimationFrame(drawFrame, canvas);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+//        console.log(mouse.x, ball.x)
+        var dx = mouse.x - ball.x,
+            dy = mouse.y - ball.y,
+            ax = dx * spring,
+            ay = dy * spring;
+
+        vx += ax; 
+        vy += ay;
+        vx *= friction;
+        vy *= friction;
+        ball.x += vx;
+        ball.y += vy;
+        ball.draw(context);
+      }());
+    };
+    </script>
+  </body>
+</html>

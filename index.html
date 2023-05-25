@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/5fff77269d.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="./styleMe.css">
+    <title>Achraf Moreau</title>
+</head>
+<body>
+
+    <nav id="nav" class="navbar navbar-expand-lg navbar-dark scrolling-navbar fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand ms-5" href="#">HOME</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a href='#litte_about_me'>Me</a>
+                </li>
+                <li class="nav-item">
+                    <a href='#work'>work</a>
+                </li>
+                <li class="nav-item">
+                    <a href='#contact'>contact</a>
+                </li>
+            </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid view">
+        <div class="row">
+            <div class="col-md-8">
+                <canvas id="canvas"></canvas>
+                <div class="d-flex justify-content-end quote">
+                    <p id="myface">It is better to be unhappy and know the worst,<br> than to be happy in a fool's paradise.</p>
+                </div>
+            </div>
+            <div class="col-md-4 myface">
+                <img src="./asset/Web Developer_Monochromatic (1).png" alt="" class="img-fluid leftImage" >
+            </div>
+        </div>
+    </div>
+    <section id="litte_about_me">
+        <div class="container">
+            <div class="row text-center my-5 text-capitalize ">
+                <h1>little about me</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-4 ">
+                    <h4 class="text-capitalize">Me</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nobis porro eius quas eos sit ullam doloremque? Tenetur laborum omnis reprehenderit repellendus magni saepe</p>>
+                </div>
+                <div class="col-md-4">
+                    <h4 class="text-capitalize">education</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nobis porro eius quas eos sit ullam doloremque? Tenetur laborum omnis reprehenderit repellendus magni saepe, porro officia assumenda maxime consectetur blanditiis?</p>
+                </div>
+                <div class="col-md-4">
+                    <h4 class="text-capitalize">exeprience</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nobis porro eius quas eos sit ullam doloremque? Tenetur laborum omnis reprehenderit repellendus magni saepe, porro officia assumenda maxime consectetur blanditiis?</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="work" class="my-5">
+        <div class="row">
+            <h1 class="text-center text-capitalize my-5">my Work</h1>
+        </div>
+        <div class="slider">
+            <button id="next">></button>
+            <button id="prev"><</button>
+        </div>
+        <div class="btns">
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container text-center">
+            <div class="row">
+                <h1>contact me 😉</h1>
+            </div>
+            <div class="row my-5" id="icons">
+                
+            </div>
+        </div>
+    </section>
+
+
+    
+    
+    <script src="./canvas.js"></script>
+    
+    <script>
+
+        const icons = [
+            {brand: 'twitter', icon:'fa-twitter', line:''},
+            {brand: 'linkedin', icon:'fa-linkedin', line:''},
+            {brand: 'github', icon:'fa-github', line:''},
+            {brand: 'facebook', icon:'fa-facebook', line:''},
+        ]
+
+        icons.forEach((elm, i)=>{
+            $('#icons').append("<div class='col-md-3'><div class='outer'><button class='pill'><p>"+elm.brand+"</p><a href=''><i class='fa-brands "+elm.icon+"' style='color: #8d1e36;font-size:4rem;''></i></a></button></div></div>"
+            )
+        })
+
+        let xhr = new XMLHttpRequest()
+        xhr.open("GET","http://localhost:3000/home", true)
+        xhr.onload = ()=>{
+            if(xhr.status === 200){
+                let respond = xhr.responseText
+                const allprojects = JSON.parse(respond).projects
+                
+                $.map(allprojects, (elm, i)=>{
+                    
+                    $(".slider").append("<div key="+elm.i+" class='item'><div class='image'><img class='img-fluid' src="+elm.pic+"></div><h3>"+elm.title+"</h3><p>"+elm.body+"</p><ul class='tags'></ul>")
+
+                    $.each(elm.tools, (tag,i)=>{
+                        $('.item:last-child .tags').append("<li>"+i+"</li>")
+                    })
+                })
+            }
+            let items = $(".item")
+            let prev = $("#prev")
+            let next = $("#next")
+            let active = Math.floor(items.length/2);
+            function loadShow(){
+                let stt = 0;
+                items[active].style.transform = `none`;
+                items[active].style.zIndex = 1;
+                items[active].style.filter = 'none';
+                items[active].style.opacity = 1;
+                for(var i = active + 1; i < items.length; i++){
+                    stt++;
+                    items[i].style.transform = `translateX(${120*stt}px) scale(${1 - 0.2*stt}) perspective(16px) rotateY(-1deg)`;
+                    items[i].style.zIndex = -stt;
+                    items[i].style.filter = 'blur(5px)';
+                    items[i].style.opacity = stt > 2 ? 0 : 0.6;
+                }
+                stt = 0;
+                for(var i = active - 1; i >= 0; i--){
+                    stt++;
+                    items[i].style.transform = `translateX(${-120*stt}px) scale(${1 - 0.2*stt}) perspective(16px) rotateY(1deg)`;
+                    items[i].style.zIndex = -stt;
+                    items[i].style.filter = 'blur(5px)';
+                    items[i].style.opacity = stt > 2 ? 0 : 0.6;
+                }
+            }
+            loadShow();
+            next.click(()=>{
+                active = active + 1 < items.length ? active + 1 : active;
+                loadShow();    
+            })
+            prev.click(()=>{
+                active = active - 1 >= 0 ? active - 1 : active;
+                loadShow();
+            })
+        }
+      xhr.send()
+
+        
+
+
+        let scroll_y = window.scrollY
+
+        const debounce = ()=>{
+            new_window_scroll = window.scrollY
+            if(new_window_scroll > scroll_y){
+                $('nav').css("transform",'translateY(-80px)')
+            }else{
+                $('nav').css("transform",'translateY(0px)')
+            }
+            scroll_y = new_window_scroll
+        }
+        window.addEventListener('scroll', debounce)
+/*
+        let blue = $(".blue")
+        
+        window.onpointermove = (event)=>{
+            const {clientX, clientY} = event
+            //blue.css("transform", `translate(${clientX}px, ${clientY}px)`)
+            //blue.css("left", `${clientX}px`)
+            //blue.css("top", `${clientY}px`)
+            blue.animate({
+                left: `${clientX}px`,
+                top: `${clientY}px`
+              }, { duration: 20, fill: "forwards" });            
+        }
+        */
+
+    </script>
+
+</body>
+</html>
